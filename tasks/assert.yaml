@@ -1,0 +1,46 @@
+---
+# Assert tasks file for ansible-role-nnt-agent
+
+- name: "Test if Software URL and Package Information is set correctly"
+  ansible.builtin.assert:
+    that:
+      - software_url is defined
+      - software_url is string
+      - package_name is defined
+      - package_name is string
+      - package_version is defined
+      - package_version is string
+    quiet: yes
+
+- name: "Test if proxy settings are set correctly"
+  ansible.builtin.assert:
+    that:
+      - proxy is defined
+      - proxy is boolean
+      - proxy_host is defined
+      - proxy_host is string
+    quiet: yes
+  when:
+    - proxy is defined
+
+- name: "Test if hub settings are set correctly"
+  ansible.builtin.assert:
+    that:
+      - hub is defined
+      - hub is boolean
+      - hub_url is defined
+      - hub_url is string
+      - agent_username is defined
+      - agent_username is string
+      - agent_password is defined
+      - agent_password is string
+    quiet: yes
+  when:
+    - hub is defined
+
+- name: "Test if Service Information is set correctly"
+  ansible.builtin.assert:
+    that:
+      - nnt_service is defined
+      - nnt_service is string
+    quiet: yes

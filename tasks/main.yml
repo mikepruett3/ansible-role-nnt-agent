@@ -1,2 +1,40 @@
 ---
 # tasks file for ansible-role-nnt-agent
+
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars:
+    file: "{{ ansible_os_family }}.yaml"
+
+- name: "Test Access to Proxy Server"
+  ansible.builtin.uri:
+    url: "{{ proxy_host }}"
+    method: GET
+    validate_certs: no
+    status_code: [200, 400]
+  when: proxy != False
+
+- name: "Test Access to Hub"
+  ansible.builtin.uri:
+    url: "{{ hub_url }}"
+    method: GET
+    validate_certs: no
+    status_code: [200, 400]
+  when: hub != false
+
+- name: "Include tasks from assert playbook"
+  ansible.builtin.include_tasks: assert.yaml
+
+- name: "Include tasks from lookup playbook"
+  ansible.builtin.include_tasks: lookup.yaml
+
+- name: "Include tasks from install playbook"
+  ansible.builtin.include_tasks: install.yaml
+  when:
+    - install is defined
+    - install | bool
+
+#- name: "Include tasks from upgrade playbook"
+#  ansible.builtin.include_tasks: upgrade.yaml
+#  when:
+#    - upgrade is defined
+#    - upgrade | bool

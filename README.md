@@ -1,38 +1,70 @@
-Role Name
+Ansible Role: New Net Technologies Change Tracker Agent (Gen7)
 =========
 
-A brief description of the role goes here.
+Ansible role to install/uninstall New Net Technologies Change Tracker Agent (Gen7) on Linux servers.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+The role does not require anything to run on Ubuntu, Debian or RHEL and its derivatives. This role assumes that you have the software package located on a web server somewhere in your environment.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Available variables are listed below, along with default values (see ```defaults/main.yml```):
+
+``` yaml
+beacon: false
+beacon_host: "http://beacon.example.org"
+
+software_url: "http://www.example.org"
+package_name: "managesoft-17.3.0-1.x86_64.rpm"
+package_version: "17.3.0"
+
+cert_file:      "mgsft_rollout_cert"
+response_file:  "mgsft_rollout_response"
+```
+
+```beacon``` **(Required)** Controls if the client install will be used with a local Beacon Server. This should be either **true** or **false** (Default is **false**).
+
+```beacon_host``` **(Required)** The URL of the local Beacon Server. This should be either **http** or **https**.
+
+```software_url``` **(Required)** The URL that hosts the Installer package. This should be either **http** or **https**.
+
+```package_name``` **(Required)** The Installer package name.
+
+```package_version``` **(Required)** The version of the Installer package. Used in determination if Upgrading existing install.
+
+```cert_file``` **(Required)** The name of the beacon certificate file to download from the `software_url`.
+
+```response_file``` **(Required)** The name of the agent installaton response file to download from the `software_url`.
+
+Role variables can be stored with the ```hosts.yaml``` file, or in the main variables file.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
+``` yaml
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - role: mikepruett3.nnt-agent
+           vars:
+            software_url: "http://www.example.org"
+            package_name: "flexera-agent-installer"
+            package_version: "17.3.0"
+```
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Role created by [mikepruett3](https://github.com/mikepruett3) on [Github.com](https://github.com/mikepruett3/ansible-role-nnt-agent)

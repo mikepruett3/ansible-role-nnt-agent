@@ -1,0 +1,130 @@
+---
+# Lookup tasks file for ansible-role-nnt-agent
+
+- name: "Check for NNT install directory"
+  ansible.builtin.stat:
+    path: /opt/nnt/gen7agentcore/
+  register: result
+  ignore_errors: true
+
+- name: "Set Facts for NNT install directory"
+  ansible.builtin.set_fact:
+    nnt_install: /opt/nnt/gen7agentcore/
+  when:
+    - result.stat.exists
+    - result.stat.isdir
+    - result.failed is false
+
+- name: "Set Facts for Install variable"
+  ansible.builtin.set_fact:
+    install: true
+  when:
+    - nnt_install is not defined
+
+- name: "Check for NNT config directory"
+  ansible.builtin.stat:
+    path: /var/nnt/gen7agent.app.netcore
+  register: result
+  ignore_errors: true
+
+- name: "Set Facts for NNT config directory"
+  ansible.builtin.set_fact:
+    nnt_config_dir: /var/nnt/gen7agent.app.netcore
+  when:
+    - result.stat.exists
+    - result.stat.isdir
+    - result.failed is false
+
+#- name: "Collect fingerprint of the Managesoft Certificate"
+#  ansible.builtin.shell:
+#    cmd: openssl x509 -noout -fingerprint -sha256 -inform pem -in '{{ managesoft_config_dir }}/etc/ssl/cert.pem'
+#  register: result
+#  when:
+#    - managesoft_home is defined
+
+#- name: "Set Facts for Managesoft Certificate fingerprint"
+#  ansible.builtin.set_fact:
+#    certificate: "{{ result.stdout | split('=') | last }}"
+#  when:
+#    - result.failed is false
+
+#- name: "Download Flexera Certificate file to /tmp"
+#  ansible.builtin.get_url:
+#    url: "{{ software_url }}/{{ cert_file }}"
+#    dest: "/tmp/"
+#    validate_certs: no
+#    mode: '0774'
+#  when:
+#    - managesoft_home is defined
+
+#- name: "Collect fingerprint of the latest Managesoft Certificate"
+#  ansible.builtin.shell:
+#    cmd: openssl x509 -noout -fingerprint -sha256 -inform pem -in '/tmp/{{ cert_file }}'
+#  register: result
+#  when:
+#    - managesoft_home is defined
+
+#- name: "Set Facts for latest Managesoft Certificate fingerprint"
+#  ansible.builtin.set_fact:
+#    certificate_latest: "{{ result.stdout | split('=') | last }}"
+#  when:
+#    - result.failed is false
+
+#- name: "Set Facts for Cert_Replace variable"
+#  ansible.builtin.set_fact:
+#    cert_replace: true
+#  when:
+#    - certificate is defined
+#    - certificate_latest is defined
+#    - certificate != certificate_latest
+
+- name: "Check for NNT HubDetails XML File"
+  ansible.builtin.stat:
+    path: "{{ nnt_config_dir }}/HubDetails.xml"
+  register: result
+  when:
+    - nnt_config_dir is defined
+
+- name: "Set Facts for NNT HubDetails XML File"
+  ansible.builtin.set_fact:
+    hubdetails_file: "{{ nnt_config_dir }}/HubDetails.xml"
+  when:
+    - nnt_config_dir is defined
+    - result.stat.exists
+    - result.failed is false
+
+- name: "Check for NNT Version TXT File"
+  ansible.builtin.stat:
+    path: "{{ nnt_config_dir }}/version.txt"
+  register: result
+  when:
+    - nnt_config_dir is defined
+
+- name: "Set Facts for NNT Version TXT File"
+  ansible.builtin.set_fact:
+    version_file: "{{ nnt_config_dir }}/version.txt"
+  when:
+    - nnt_config_dir is defined
+    - result.stat.exists
+    - result.failed is false
+
+- name: "Read from Managesoft Configuration INI File"
+  ansible.builtin.shell:
+    cmd: "cat {{ version_file }}"
+  register: result
+  when:
+    - version_file is defined
+
+- name: "Set Facts for Flexera Inventory Agent Installed Version"
+  ansible.builtin.set_fact:
+    installed_version: "{{ result.stdout }}"
+  when:
+    - result is defined
+    - result.failed is false
+
+- name: "Set Facts for Upgrade variable"
+  ansible.builtin.set_fact:
+    upgrade: true
+  when:
+    - installed_version is defined
+    - installed_version != package_version

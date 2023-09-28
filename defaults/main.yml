@@ -1,2 +1,16 @@
 ---
 # defaults file for ansible-role-nnt-agent
+
+proxy: false
+proxy_host: "http://myproxyserver.example.com:3128"
+
+hub: true
+hub_url: "https://nnt.example.org/api"
+agent_username: "agent"
+agent_password: "password"
+
+software_url:   "http://www.example.org"
+package_name:   "nnt-changetracker-gen7agentcore-7.0.1.9-255.noarch.rpm"
+package_version: "7.0.1.9-255"
+
+nnt_service: "nntgen7agentcore"
