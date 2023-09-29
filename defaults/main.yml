@@ -2,7 +2,9 @@
 # defaults file for ansible-role-nnt-agent
 
 proxy: false
-proxy_host: "http://myproxyserver.example.com:3128"
+proxy_host: "myproxyserver.example.com"
+proxy_port: "3128"
+proxy_protocol: "http"
 
 hub_host: "nnt.example.org"
 hub_ip: '1.2.3.4'

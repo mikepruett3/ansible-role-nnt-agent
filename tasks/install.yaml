@@ -49,9 +49,34 @@
   when:
     - ansible_facts['pkg_mgr'] == 'apt'
 
-#- name: "Register Agent with Hub Host"
-#  ansible.builtin.shell:
-#    cmd: "{{ nnt_install }}/{{ config_script }} {{ hub_url }} {{ agent_username }} {{ agent_password }}"
+- name: "Check for NNT install directory"
+  ansible.builtin.stat:
+    path: /opt/nnt/gen7agentcore/
+  register: result
+  ignore_errors: true
+
+- name: "Set Facts for NNT install directory"
+  ansible.builtin.set_fact:
+    nnt_install: /opt/nnt/gen7agentcore/
+  when:
+    - result.stat.exists
+    - result.stat.isdir
+    - result.failed is false
+
+- name: "Register Agent with Hub Host"
+  ansible.builtin.shell:
+    cmd: >
+      "{{ nnt_install }}/{{ config_script }}"
+      "{{ hub_url }}"
+      "{{ agent_username }}"
+      "{{ agent_password }}"
+      "{{ nnt_install }}/bin"
+      ""
+      ""
+      ""
+      "{{ use_proxy }}"
+      "{{ proxy_protocol }}"
+      "{{ proxy_host }}"
 
 #- name: "Restart the Service (sysv)"
 #  ansible.builtin.service:

@@ -7,7 +7,7 @@
 
 - name: "Test Access to Proxy Server"
   ansible.builtin.uri:
-    url: "{{ proxy_host }}"
+    url: "{{ proxy_protocol }}://{{ proxy_host }}:{{ proxy_port }}"
     method: GET
     validate_certs: no
     status_code: [200, 400]

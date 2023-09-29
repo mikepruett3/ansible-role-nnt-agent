@@ -15,7 +15,9 @@ Available variables are listed below, along with default values (see ```defaults
 
 ``` yaml
 proxy: False
-proxy_host: "myproxyserver.example.com:3128"
+proxy_host: "myproxyserver.example.com"
+proxy_port: "3128"
+proxy_protocol: "http"
 
 hub_host: "nnt.example.org"
 hub_ip: '1.2.3.4'
@@ -33,7 +35,11 @@ config_script: "configure-gen7agentcore.sh"
 
 ```proxy``` **(Required)** Controls if the client install will be used with a HTTP/HTTPS Proxy Server. This should be either **True** or **False** (Default is **False**).
 
-```proxy_host``` **(Optional)** Settings only required when ```proxy``` is set to **True**.
+```proxy_host:``` **(Required)** Hostname or IP Address of the Proxy Server to use. Settings only required when ```proxy``` is set to **True**.
+
+```proxy_port:``` **(Required)** Port to use to connect with the Proxy Server. Settings only required when ```proxy``` is set to **True**.
+
+```proxy_protocol``` **(Required)** Protocol to use to connect with the Proxy Server. This should be either **http** or **https**. Settings only required when ```proxy``` is set to **True**.
 
 ```hub_host``` **(Required)** Hostname of the Hub Server.
 

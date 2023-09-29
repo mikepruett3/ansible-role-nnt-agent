@@ -35,6 +35,18 @@
     - result.stat.isdir
     - result.failed is false
 
+- name: "Set Facts for USE_PROXY is True"
+  ansible.builtin.set_fact:
+    use_proxy: yes
+  when:
+    - proxy | bool
+
+- name: "Set Facts for USE_PROXY is False"
+  ansible.builtin.set_fact:
+    use_proxy: no
+  when:
+    - not proxy | bool
+
 #- name: "Collect fingerprint of the Managesoft Certificate"
 #  ansible.builtin.shell:
 #    cmd: openssl x509 -noout -fingerprint -sha256 -inform pem -in '{{ managesoft_config_dir }}/etc/ssl/cert.pem'
