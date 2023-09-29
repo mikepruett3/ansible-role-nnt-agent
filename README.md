@@ -14,20 +14,29 @@ Role Variables
 Available variables are listed below, along with default values (see ```defaults/main.yml```):
 
 ``` yaml
-beacon: false
-beacon_host: "http://beacon.example.org"
+proxy: False
+proxy_host: "myproxyserver.example.com:3128"
+
+hub_url: "https://nnt.example.org/api"
+agent_username: "agent"
+agent_password: "password"
 
 software_url: "http://www.example.org"
 package_name: "managesoft-17.3.0-1.x86_64.rpm"
 package_version: "17.3.0"
 
-cert_file:      "mgsft_rollout_cert"
-response_file:  "mgsft_rollout_response"
+nnt_service: "nntgen7agentcore"
 ```
 
-```beacon``` **(Required)** Controls if the client install will be used with a local Beacon Server. This should be either **true** or **false** (Default is **false**).
+```proxy``` **(Required)** Controls if the client install will be used with a HTTP/HTTPS Proxy Server. This should be either **True** or **False** (Default is **False**).
 
-```beacon_host``` **(Required)** The URL of the local Beacon Server. This should be either **http** or **https**.
+```proxy_host``` **(Optional)** Settings only required when ```proxy``` is set to **True**.
+
+```hub_url``` **(Required)** Url to the Hub Server.
+
+```agent_username``` **(Required)** Username for the Hub Server.
+
+```agent_password``` **(Required)** Password for to the Hub Server.
 
 ```software_url``` **(Required)** The URL that hosts the Installer package. This should be either **http** or **https**.
 
@@ -35,9 +44,7 @@ response_file:  "mgsft_rollout_response"
 
 ```package_version``` **(Required)** The version of the Installer package. Used in determination if Upgrading existing install.
 
-```cert_file``` **(Required)** The name of the beacon certificate file to download from the `software_url`.
-
-```response_file``` **(Required)** The name of the agent installaton response file to download from the `software_url`.
+```nnt_service``` **(Required)** The (Base) name of the NNT Change Tracker Service.
 
 Role variables can be stored with the ```hosts.yaml``` file, or in the main variables file.
 
@@ -53,10 +60,6 @@ Example Playbook
     - hosts: servers
       roles:
          - role: mikepruett3.nnt-agent
-           vars:
-            software_url: "http://www.example.org"
-            package_name: "flexera-agent-installer"
-            package_version: "17.3.0"
 ```
 
 License

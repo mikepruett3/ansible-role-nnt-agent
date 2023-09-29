@@ -26,8 +26,6 @@
 - name: "Test if hub settings are set correctly"
   ansible.builtin.assert:
     that:
-      - hub is defined
-      - hub is boolean
       - hub_url is defined
       - hub_url is string
       - agent_username is defined
@@ -35,8 +33,6 @@
       - agent_password is defined
       - agent_password is string
     quiet: yes
-  when:
-    - hub is defined
 
 - name: "Test if Service Information is set correctly"
   ansible.builtin.assert:

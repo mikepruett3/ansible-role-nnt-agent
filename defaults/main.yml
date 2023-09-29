@@ -4,7 +4,6 @@
 proxy: false
 proxy_host: "http://myproxyserver.example.com:3128"
 
-hub: true
 hub_url: "https://nnt.example.org/api"
 agent_username: "agent"
 agent_password: "password"
