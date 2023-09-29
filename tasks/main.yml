@@ -24,7 +24,7 @@
 - name: "Add Hub Server IP and Hostname to the /etc/hosts for Name Resolution"
   ansible.builtin.lineinfile:
     path: /etc/hosts
-    line: "{{ hub_ip }} {{ hub_host }}"
+    line: "{{ hub_ip }}\t{{ hub_host }}"
     insertafter: EOF
     state: present
   when:
