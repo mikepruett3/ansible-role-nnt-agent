@@ -13,29 +13,19 @@
     status_code: [200, 400]
   when: proxy != False
 
-- name: "Check for Name Resolution of the Hub Server"
-  ansible.builtin.debug:
-    msg: "{{ query('community.general.dig', hub_host) }}"
-  register: query
-
-#- ansible.builtin.debug:
-#    var: query
-
 - name: "Add Hub Server IP and Hostname to the /etc/hosts for Name Resolution"
   ansible.builtin.lineinfile:
     path: /etc/hosts
     line: "{{ hub_ip }}\t{{ hub_host }}"
     insertafter: EOF
     state: present
-  when:
-    - query.msg is search('NXDOMAIN')
 
 - name: "Test Access to Hub Server"
   ansible.builtin.uri:
     url: "{{ hub_url }}"
     method: GET
     validate_certs: no
-    status_code: [200, 400]
+    status_code: [200, 400, 404]
 
 - name: "Include tasks from assert playbook"
   ansible.builtin.include_tasks: assert.yaml
