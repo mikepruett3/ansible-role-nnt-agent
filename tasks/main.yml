@@ -13,7 +13,12 @@
     status_code: [200, 400]
   when: proxy != False
 
-- name: "Test Access to Hub"
+- name: "Check for Name Resolution of the Hub Server"
+  ansible.builtin.debug:
+    msg: "{{ query('community.dns.lookup', '{{ hub_host }}') }}"
+  register: query
+
+- name: "Test Access to Hub Server"
   ansible.builtin.uri:
     url: "{{ hub_url }}"
     method: GET
