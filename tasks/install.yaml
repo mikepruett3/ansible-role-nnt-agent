@@ -65,18 +65,7 @@
 
 - name: "Register Agent with Hub Host"
   ansible.builtin.shell:
-    cmd: >
-      "{{ nnt_install }}/{{ config_script }}"
-      "{{ hub_url }}"
-      "{{ agent_username }}"
-      "{{ agent_password }}"
-      "{{ nnt_install }}/bin"
-      ""
-      ""
-      ""
-      "{{ use_proxy }}"
-      "{{ proxy_protocol }}"
-      "{{ proxy_host }}"
+    cmd: "{{ nnt_install }}/{{ config_script }} {{ hub_url }} {{ agent_username }} {{ agent_password }} {{ nnt_install }}/bin    {{ use_proxy }} {{ proxy_protocol }} {{ proxy_host }}"
 
 #- name: "Restart the Service (sysv)"
 #  ansible.builtin.service:
