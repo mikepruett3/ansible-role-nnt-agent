@@ -69,14 +69,14 @@
     regexp: "{{ item.regexp }}"
     replace: "{{ item.replace }}"
   with_items:
-    - regexp: '^  D_HUB_HOST='
+    - regexp: '^  D_HUB_HOST=https://localhost/api/'
       replace: '  D_HUB_HOST={{ hub_url }}'
-    - regexp: '^  D_AGENT_USER='
+    - regexp: '^  D_AGENT_USER=agent'
       replace: '  D_AGENT_USER={{ agent_username }}'
-    - regexp: '^  D_AGENT_PWD='
+    - regexp: '^  D_AGENT_PWD=password'
       replace: '  D_AGENT_PWD={{ agent_password }}'
-    - regexp: '^  D_AGENT_PATH='
-      replace: '  D_AGENT_PATH={{ nnt_install }}/bin'
+    #- regexp: '^  D_AGENT_PATH='
+    #  replace: '  D_AGENT_PATH={{ nnt_install }}/bin'
 
 - name: "Update NNT Config Script (Proxy Settings)"
   ansible.builtin.replace:
