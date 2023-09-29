@@ -28,7 +28,7 @@
     insertafter: EOF
     state: present
   when:
-    - query.stdout is search('NXDOMAIN')
+    - query.msg is search('NXDOMAIN')
 
 - name: "Test Access to Hub Server"
   ansible.builtin.uri:
