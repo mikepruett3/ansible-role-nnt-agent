@@ -1,2 +1,17 @@
 ---
 # handlers file for ansible-role-nnt-agent
+
+- name: "Restart the Service"
+  ansible.builtin.service:
+    name: "{{ nnt_service }}"
+    state: restarted
+  when:
+    - ansible_facts['service_mgr'] == 'sysv'
+
+- name: "Restart the Service"
+  ansible.builtin.systemd_service:
+    name: "{{ nnt_service }}.service"
+    daemon_reload: true
+    state: restarted
+  when:
+    - ansible_facts['service_mgr'] == 'systemd'
