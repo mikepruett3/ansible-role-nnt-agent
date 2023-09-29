@@ -35,9 +35,9 @@
 
 - name: "Include tasks from install playbook"
   ansible.builtin.include_tasks: install.yaml
-  #when:
-  #  - install is defined
-  #  - install | bool
+  when:
+    - install is defined
+    - install | bool
 
 #- name: "Include tasks from upgrade playbook"
 #  ansible.builtin.include_tasks: upgrade.yaml

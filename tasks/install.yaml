@@ -1,12 +1,12 @@
 ---
 # Install tasks file for ansible-role-nnt-agent
 
-#- name: "Test if install boolean variable is set correctly"
-#  ansible.builtin.assert:
-#    that:
-#      - install is defined
-#      - install is boolean
-#    quiet: yes
+- name: "Test if install boolean variable is set correctly"
+  ansible.builtin.assert:
+    that:
+      - install is defined
+      - install is boolean
+    quiet: yes
 
 - name: "Create software directory under root homedir, if it does not exist"
   ansible.builtin.file:
@@ -63,32 +63,17 @@
     - result.stat.isdir
     - result.failed is false
 
-#- name: "Update NNT Config Script"
-#  ansible.builtin.replace:
-#    path: "{{ nnt_install }}/{{ config_script }}"
-#    regexp: "{{ item.regexp }}"
-#    replace: "{{ item.replace }}"
-#  with_items:
-#    - regexp: '^  D_HUB_HOST=https://localhost/api/'
-#      replace: '  D_HUB_HOST={{ hub_url }}'
-#    - regexp: '^  D_AGENT_USER=agent'
-#      replace: '  D_AGENT_USER={{ agent_username }}'
-#    - regexp: '^  D_AGENT_PWD=password'
-#      replace: '  D_AGENT_PWD={{ agent_password }}'
-#    - regexp: '^  D_AGENT_PATH='
-#      replace: '  D_AGENT_PATH={{ nnt_install }}/bin'
-
 - name: "Update NNT Config Script (Proxy Settings)"
   ansible.builtin.replace:
     path: "{{ nnt_install }}/{{ config_script }}"
     regexp: "{{ item.regexp }}"
     replace: "{{ item.replace }}"
   with_items:
-    - regexp: '^  D_USE_PROXY=no'
+    - regexp: '^..D_USE_PROXY=no'
       replace: '  D_USE_PROXY={{ use_proxy }}'
-    - regexp: '^  D_PROXY_PROTOCOL='
+    - regexp: '^..D_PROXY_PROTOCOL='
       replace: '  D_PROXY_PROTOCOL={{ proxy_protocol }}'
-    - regexp: '^  D_PROXY_SERVER='
+    - regexp: '^..D_PROXY_SERVER='
       replace: '  D_PROXY_SERVER={{ proxy_host }}'
   when:
     - proxy | bool
