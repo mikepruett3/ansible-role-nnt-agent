@@ -3,13 +3,13 @@
 
 - name: "Check for NNT install directory"
   ansible.builtin.stat:
-    path: /opt/nnt/gen7agentcore/
+    path: /opt/nnt/gen7agentcore
   register: result
   ignore_errors: true
 
 - name: "Set Facts for NNT install directory"
   ansible.builtin.set_fact:
-    nnt_install: /opt/nnt/gen7agentcore/
+    nnt_install: /opt/nnt/gen7agentcore
   when:
     - result.stat.exists
     - result.stat.isdir

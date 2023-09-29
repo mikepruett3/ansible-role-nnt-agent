@@ -51,13 +51,13 @@
 
 - name: "Check for NNT install directory"
   ansible.builtin.stat:
-    path: /opt/nnt/gen7agentcore/
+    path: /opt/nnt/gen7agentcore
   register: result
   ignore_errors: true
 
 - name: "Set Facts for NNT install directory"
   ansible.builtin.set_fact:
-    nnt_install: /opt/nnt/gen7agentcore/
+    nnt_install: /opt/nnt/gen7agentcore
   when:
     - result.stat.exists
     - result.stat.isdir
@@ -69,14 +69,14 @@
     regexp: "{{ item.regexp }}"
     replace: "{{ item.replace }}"
   with_items:
-    - regexp: '^\tD_HUB_HOST='
-      replace: '\tD_HUB_HOST={{ hub_url }}'
-    - regexp: '^\tD_AGENT_USER='
-      replace: '\tD_AGENT_USER={{ agent_username }}'
-    - regexp: '^\tD_AGENT_PWD='
-      replace: '\tD_AGENT_PWD={{ agent_password }}'
-    - regexp: '^\tD_AGENT_PATH='
-      replace: '\tD_AGENT_PATH={{ nnt_install }}/bin'
+    - regexp: '^  D_HUB_HOST='
+      replace: '  D_HUB_HOST={{ hub_url }}'
+    - regexp: '^  D_AGENT_USER='
+      replace: '  D_AGENT_USER={{ agent_username }}'
+    - regexp: '^  D_AGENT_PWD='
+      replace: '  D_AGENT_PWD={{ agent_password }}'
+    - regexp: '^  D_AGENT_PATH='
+      replace: '  D_AGENT_PATH={{ nnt_install }}/bin'
 
 - name: "Update NNT Config Script (Proxy Settings)"
   ansible.builtin.replace:
