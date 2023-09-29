@@ -65,7 +65,7 @@
 
 - name: "Register Agent with Hub Host"
   ansible.builtin.debug:
-    msg: |
+    msg: ^
       "{{ nnt_install }}/{{ config_script }}"
       "{{ hub_url }}"
       "{{ agent_username }}"
