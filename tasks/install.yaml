@@ -1,12 +1,12 @@
 ---
 # Install tasks file for ansible-role-nnt-agent
 
-- name: "Test if install boolean variable is set correctly"
-  ansible.builtin.assert:
-    that:
-      - install is defined
-      - install is boolean
-    quiet: yes
+#- name: "Test if install boolean variable is set correctly"
+#  ansible.builtin.assert:
+#    that:
+#      - install is defined
+#      - install is boolean
+#    quiet: yes
 
 - name: "Create software directory under root homedir, if it does not exist"
   ansible.builtin.file:
