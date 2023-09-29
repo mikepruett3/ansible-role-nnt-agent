@@ -15,7 +15,7 @@
 
 - name: "Check for Name Resolution of the Hub Server"
   ansible.builtin.debug:
-    msg: "{{ query('community.dns.lookup', '{{ hub_host }}') }}"
+    msg: "{{ query('community.general.dig', hub_host) }}"
   register: query
 
 - name: "Test Access to Hub Server"
