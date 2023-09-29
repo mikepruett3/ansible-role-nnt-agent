@@ -18,8 +18,14 @@
     msg: "{{ query('community.general.dig', hub_host) }}"
   register: query
 
-- debug:
-    var: query
+- name: "Add Hub Server IP and Hostname to the /etc/hosts for Name Resolution"
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "{{ hub_ip }} {{ hub_host }}"
+    insertafter: EOF
+    state: present
+  when:
+    - query.msg == "NXDOMAIN"
 
 - name: "Test Access to Hub Server"
   ansible.builtin.uri:
