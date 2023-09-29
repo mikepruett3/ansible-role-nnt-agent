@@ -108,14 +108,14 @@
     - result.stat.exists
     - result.failed is false
 
-- name: "Read from Managesoft Configuration INI File"
+- name: "Read from NNT Version TXT File"
   ansible.builtin.shell:
     cmd: "cat {{ version_file }}"
   register: result
   when:
     - version_file is defined
 
-- name: "Set Facts for Flexera Inventory Agent Installed Version"
+- name: "Set Facts for NNT Change Tracker Agent Installed Version"
   ansible.builtin.set_fact:
     installed_version: "{{ result.stdout }}"
   when:

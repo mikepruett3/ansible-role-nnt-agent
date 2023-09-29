@@ -49,21 +49,21 @@
   when:
     - ansible_facts['pkg_mgr'] == 'apt'
 
-- name: "Register Agent with Hub Host"
-  ansible.builtin.shell:
-    cmd: "{{ nnt_install }}/configure-gen7agentcore.sh {{ hub_url }} {{ agent_username }} {{ agent_password }}"
+#- name: "Register Agent with Hub Host"
+#  ansible.builtin.shell:
+#    cmd: "{{ nnt_install }}/{{ config_script }} {{ hub_url }} {{ agent_username }} {{ agent_password }}"
 
-- name: "Restart the Service (sysv)"
-  ansible.builtin.service:
-    name: "{{ nnt_service }}"
-    state: restarted
-  when:
-    - ansible_facts['service_mgr'] == 'sysv'
+#- name: "Restart the Service (sysv)"
+#  ansible.builtin.service:
+#    name: "{{ nnt_service }}"
+#    state: restarted
+#  when:
+#    - ansible_facts['service_mgr'] == 'sysv'
 
-- name: "Restart the Service (systemd)"
-  ansible.builtin.systemd_service:
-    name: "{{ nnt_service }}.service"
-    daemon_reload: true
-    state: restarted
-  when:
-    - ansible_facts['service_mgr'] == 'systemd'
+#- name: "Restart the Service (systemd)"
+#  ansible.builtin.systemd_service:
+#    name: "{{ nnt_service }}.service"
+#    daemon_reload: true
+#    state: restarted
+#  when:
+#    - ansible_facts['service_mgr'] == 'systemd'

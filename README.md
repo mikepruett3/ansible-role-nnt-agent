@@ -17,6 +17,8 @@ Available variables are listed below, along with default values (see ```defaults
 proxy: False
 proxy_host: "myproxyserver.example.com:3128"
 
+hub_host: "nnt.example.org"
+hub_ip: '1.2.3.4'
 hub_url: "https://nnt.example.org/api"
 agent_username: "agent"
 agent_password: "password"
@@ -26,11 +28,16 @@ package_name: "managesoft-17.3.0-1.x86_64.rpm"
 package_version: "17.3.0"
 
 nnt_service: "nntgen7agentcore"
+config_script: "configure-gen7agentcore.sh"
 ```
 
 ```proxy``` **(Required)** Controls if the client install will be used with a HTTP/HTTPS Proxy Server. This should be either **True** or **False** (Default is **False**).
 
 ```proxy_host``` **(Optional)** Settings only required when ```proxy``` is set to **True**.
+
+```hub_host``` **(Required)** Hostname of the Hub Server.
+
+```hub_ip``` **(Required)** IP Address of the Hub Server.
 
 ```hub_url``` **(Required)** Url to the Hub Server.
 
@@ -45,6 +52,8 @@ nnt_service: "nntgen7agentcore"
 ```package_version``` **(Required)** The version of the Installer package. Used in determination if Upgrading existing install.
 
 ```nnt_service``` **(Required)** The (Base) name of the NNT Change Tracker Service.
+
+```config_script``` **(Required)** The Configuration Script name for the NNT Change Tracker Service.
 
 Role variables can be stored with the ```hosts.yaml``` file, or in the main variables file.
 
