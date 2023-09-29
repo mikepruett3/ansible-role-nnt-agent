@@ -19,7 +19,6 @@
     method: GET
     validate_certs: no
     status_code: [200, 400]
-  when: hub != false
 
 - name: "Include tasks from assert playbook"
   ansible.builtin.include_tasks: assert.yaml
