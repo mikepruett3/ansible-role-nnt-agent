@@ -64,7 +64,7 @@
     - result.failed is false
 
 - name: "Register Agent with Hub Host"
-  ansible.builtin.debug:
+  ansible.builtin.shell:
     msg: >
       "{{ nnt_install }}/{{ config_script }}"
       "{{ hub_url }}"
