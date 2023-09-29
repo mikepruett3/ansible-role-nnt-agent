@@ -18,6 +18,9 @@
     msg: "{{ query('community.general.dig', hub_host) }}"
   register: query
 
+- debug:
+    var: query
+
 - name: "Test Access to Hub Server"
   ansible.builtin.uri:
     url: "{{ hub_url }}"
