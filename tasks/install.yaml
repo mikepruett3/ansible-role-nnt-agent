@@ -77,4 +77,4 @@
 
 - name: "Register Agent with Hub Host"
   ansible.builtin.shell:
-    cmd: "{{ nnt_install }}/{{ config_script }} {{ hub_url }} {{ agent_username }} {{ agent_password }}"
+    cmd: "/opt/nnt/gen7agentcore/{{ config_script }} {{ hub_url }} {{ agent_username }} {{ agent_password }}"
