@@ -83,6 +83,6 @@
 
 - name: "Register Agent with Hub Host (Debian)"
   ansible.builtin.shell:
-    cmd: "/opt/nnt/gen7agent/{{ config_script }} {{ hub_url }} {{ agent_username }} {{ agent_password }}"
+    cmd: "/opt/nnt/gen7agent/configure-gen7agent.sh {{ hub_url }} {{ agent_username }} {{ agent_password }}"
   when:
     - ansible_facts['os_family'] == 'Debian'
