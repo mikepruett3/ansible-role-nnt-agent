@@ -75,6 +75,14 @@
   when:
     - proxy | bool
 
-- name: "Register Agent with Hub Host"
+- name: "Register Agent with Hub Host (RedHat)"
   ansible.builtin.shell:
     cmd: "/opt/nnt/gen7agentcore/{{ config_script }} {{ hub_url }} {{ agent_username }} {{ agent_password }}"
+  when:
+    - ansible_facts['os_family'] == 'RedHat'
+
+- name: "Register Agent with Hub Host (Debian)"
+  ansible.builtin.shell:
+    cmd: "/opt/nnt/gen7agent/{{ config_script }} {{ hub_url }} {{ agent_username }} {{ agent_password }}"
+  when:
+    - ansible_facts['os_family'] == 'Debian'
