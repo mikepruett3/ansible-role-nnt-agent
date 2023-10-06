@@ -1,9 +1,9 @@
 ---
 # tasks file for ansible-role-nnt-agent
 
-#- name: "Include OS-specific variables"
-#  ansible.builtin.include_vars:
-#    file: "{{ ansible_os_family }}.yaml"
+- name: "Include OS-specific variables"
+  ansible.builtin.include_vars:
+    file: "{{ ansible_os_family }}.yaml"
 
 - name: "Test Access to Proxy Server"
   ansible.builtin.uri:

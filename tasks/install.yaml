@@ -27,6 +27,15 @@
   when:
     - not package.stat.exists | bool
 
+- name: "Extract Debian packages from .ZIP file (apt)"
+  ansible.builtin.unarchive:
+    src: "/root/software/nnt/{{ package_name }}"
+    dest: "/root/software/nnt/"
+    remote_src: yes
+  when:
+    #- package_name.find(".zip") == -1
+    - ansible_facts['pkg_mgr'] == 'apt'
+
 - name: "Install package (yum)"
   ansible.builtin.yum:
     name: "/root/software/nnt/{{ package_name }}"
@@ -44,8 +53,10 @@
 
 - name: "Install package (apt)"
   ansible.builtin.apt:
-    deb: "/root/software/nnt/{{ package_name }}"
+    deb: "/root/software/nnt/{{ item }}"
     state: present
+  with_items:
+    - "{{ packages }}"
   when:
     - ansible_facts['pkg_mgr'] == 'apt'
 
