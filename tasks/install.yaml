@@ -116,7 +116,7 @@
     nnt_bin: /opt/nnt/gen7agent/bin
     config_script: /opt/nnt/gen7agent/configure-gen7agent.sh
   when:
-    - ansible_facts['os_family'] == 'RedHat'
+    - ansible_facts['os_family'] == 'Debian'
 
 - name: "Register Agent with Hub Host (RedHat)"
   ansible.builtin.shell:
