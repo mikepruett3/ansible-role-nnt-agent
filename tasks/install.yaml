@@ -128,14 +128,14 @@
 - name: "Register Agent with Hub Host (RedHat - Proxy)"
   ansible.builtin.shell:
     cmd: |
-      {{ hub_url }}
-      {{ agent_username }}
-      {{ agent_password }}
-
-
-
-
-      {{ proxy_protocol }}
+      {{ hub_url }} \
+      {{ agent_username }} \
+      {{ agent_password }} \
+       \
+       \
+       \
+       \
+      {{ proxy_protocol }} \
       {{ proxy_host }}:{{ proxy_port }}
   args:
     chdir: "{{ nnt_install }}"
