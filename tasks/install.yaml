@@ -70,22 +70,6 @@
   when:
     - ansible_facts['pkg_mgr'] == 'apt'
 
-#- name: "Update NNT Config Script (Proxy Settings - RedHat)"
-#  ansible.builtin.replace:
-#    path: "/opt/nnt/gen7agentcore/{{ config_script }}"
-#    regexp: "{{ item.regexp }}"
-#    replace: "{{ item.replace }}"
-#  with_items:
-#    - regexp: '^..D_USE_PROXY=no'
-#      replace: '  D_USE_PROXY={{ use_proxy }}'
-#    - regexp: '^..D_PROXY_PROTOCOL='
-#      replace: '  D_PROXY_PROTOCOL={{ proxy_protocol }}'
-#    - regexp: '^..D_PROXY_SERVER='
-#      replace: '  D_PROXY_SERVER={{ proxy_host }}'
-#  when:
-#    - proxy | bool
-#    - ansible_facts['os_family'] == 'RedHat'
-
 - name: "Set Facts for NNT configuration (RedHat)"
   ansible.builtin.set_fact:
     nnt_install: /opt/nnt/gen7agentcore
@@ -122,7 +106,7 @@
     replace: "{{ item.replace }}"
   with_items:
     - regexp: '^..<UseDefaultProxy>false'
-      replace: '  <UseDefaultProxy>{{ use_proxy }}'
+      replace: '  <UseDefaultProxy>true'
     - regexp: '^..<Proxy />'
       replace: '  <Proxy>{{ proxy_protocol }}://{{ proxy_host }}:{{ proxy_port }}</Proxy>'
   when:
