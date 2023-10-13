@@ -105,16 +105,16 @@
 - name: "Set Facts for NNT configuration (RedHat)"
   ansible.builtin.set_fact:
     nnt_install: /opt/nnt/gen7agentcore
-    nnt_bin: "{{ nnt_install }}/bin"
-    config_script: "{{ nnt_install }}/configure-gen7agentcore.sh"
+    nnt_bin: /opt/nnt/gen7agentcore/bin
+    config_script: /opt/nnt/gen7agentcore/configure-gen7agentcore.sh
   when:
     - ansible_facts['os_family'] == 'RedHat'
 
 - name: "Set Facts for NNT configuration (Debian)"
   ansible.builtin.set_fact:
     nnt_install: /opt/nnt/gen7agent
-    nnt_bin: "{{ nnt_install }}/bin"
-    config_script: "{{ nnt_install }}/configure-gen7agent.sh"
+    nnt_bin: /opt/nnt/gen7agent/bin
+    config_script: /opt/nnt/gen7agent/configure-gen7agent.sh
   when:
     - ansible_facts['os_family'] == 'RedHat'
 
