@@ -1,6 +1,16 @@
 ---
 # Install tasks file for ansible-role-nnt-agent
 
+- name: "Test if tripwire_installed boolean variable is set correctly"
+  ansible.builtin.assert:
+    that:
+      - tripwire_installed is defined
+      - tripwire_installed is boolean
+      - not tripwire_installed | bool
+    quiet: yes
+  when:
+    - tripwire_installed is defined
+
 - name: "Test if install boolean variable is set correctly"
   ansible.builtin.assert:
     that:

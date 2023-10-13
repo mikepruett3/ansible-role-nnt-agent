@@ -1,6 +1,20 @@
 ---
 # Lookup tasks file for ansible-role-nnt-agent
 
+- name: "Check for Tripwire Configuration directory"
+  ansible.builtin.stat:
+    path: /etc/tripwire/
+  register: result
+  ignore_errors: true
+
+- name: "Set Facts for Tripwire Configuration directory"
+  ansible.builtin.set_fact:
+    tripwire_installed: true
+  when:
+    - result.stat.exists
+    - result.stat.isdir
+    - result.failed is false
+
 - name: "Check for NNT install directory"
   ansible.builtin.stat:
     path: /opt/nnt/gen7agentcore
