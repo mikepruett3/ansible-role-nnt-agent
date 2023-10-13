@@ -30,7 +30,6 @@ package_name: "managesoft-17.3.0-1.x86_64.rpm"
 package_version: "17.3.0"
 
 nnt_service: "nntgen7agentcore"
-config_script: "configure-gen7agentcore.sh"
 ```
 
 ```proxy``` **(Required)** Controls if the client install will be used with a HTTP/HTTPS Proxy Server. This should be either **True** or **False** (Default is **False**).
@@ -58,8 +57,6 @@ config_script: "configure-gen7agentcore.sh"
 ```package_version``` **(Required)** The version of the Installer package. Used in determination if Upgrading existing install.
 
 ```nnt_service``` **(Required)** The (Base) name of the NNT Change Tracker Service.
-
-```config_script``` **(Required)** The Configuration Script name for the NNT Change Tracker Service.
 
 Role variables can be stored with the ```hosts.yaml``` file, or in the main variables file.
 

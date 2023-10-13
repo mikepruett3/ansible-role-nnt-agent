@@ -51,7 +51,7 @@
 
 - name: "Set Facts for USE_PROXY is True"
   ansible.builtin.set_fact:
-    use_proxy: yes
+    use_proxy: "yes"
   when:
     - proxy | bool
 
