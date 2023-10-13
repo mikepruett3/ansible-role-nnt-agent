@@ -70,9 +70,9 @@
   when:
     - ansible_facts['pkg_mgr'] == 'apt'
 
-- name: "Update NNT Config Script (Proxy Settings)"
+- name: "Update NNT Config Script (Proxy Settings - RedHat)"
   ansible.builtin.replace:
-    path: "{{ nnt_install }}/{{ config_script }}"
+    path: "/opt/nnt/gen7agentcore/{{ config_script }}"
     regexp: "{{ item.regexp }}"
     replace: "{{ item.replace }}"
   with_items:
@@ -84,6 +84,23 @@
       replace: '  D_PROXY_SERVER={{ proxy_host }}'
   when:
     - proxy | bool
+    - ansible_facts['os_family'] == 'RedHat'
+
+- name: "Update NNT Config Script (Proxy Settings - Debian)"
+  ansible.builtin.replace:
+    path: "/opt/nnt/gen7agent/configure-gen7agent.sh"
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+  with_items:
+    - regexp: '^..D_USE_PROXY=no'
+      replace: '  D_USE_PROXY={{ use_proxy }}'
+    - regexp: '^..D_PROXY_PROTOCOL='
+      replace: '  D_PROXY_PROTOCOL={{ proxy_protocol }}'
+    - regexp: '^..D_PROXY_SERVER='
+      replace: '  D_PROXY_SERVER={{ proxy_host }}'
+  when:
+    - proxy | bool
+    - ansible_facts['os_family'] == 'Debian'
 
 - name: "Register Agent with Hub Host (RedHat)"
   ansible.builtin.shell:
