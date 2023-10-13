@@ -27,10 +27,10 @@
   ansible.builtin.set_fact:
     nnt_install: /opt/nnt/gen7agentcore
   when:
+    - ansible_facts['os_family'] == 'RedHat'
     - result.stat.exists
     - result.stat.isdir
     - result.failed is false
-    - ansible_facts['os_family'] == 'RedHat'
 
 - name: "Check for NNT install directory (Debian)"
   ansible.builtin.stat:
@@ -44,10 +44,10 @@
   ansible.builtin.set_fact:
     nnt_install: /opt/nnt/gen7agent
   when:
+    - ansible_facts['os_family'] == 'Debian'
     - result.stat.exists
     - result.stat.isdir
     - result.failed is false
-    - ansible_facts['os_family'] == 'Debian'
 
 - name: "Set Facts for Install variable"
   ansible.builtin.set_fact:
@@ -67,10 +67,10 @@
   ansible.builtin.set_fact:
     nnt_config: /var/nnt/gen7agent.app.netcore
   when:
+    - ansible_facts['os_family'] == 'RedHat'
     - result.stat.exists
     - result.stat.isdir
     - result.failed is false
-    - ansible_facts['os_family'] == 'RedHat'
 
 - name: "Check for NNT config directory (Debian)"
   ansible.builtin.stat:
@@ -84,10 +84,10 @@
   ansible.builtin.set_fact:
     nnt_config: /var/nnt/gen7agent.service
   when:
+    - ansible_facts['os_family'] == 'Debian'
     - result.stat.exists
     - result.stat.isdir
     - result.failed is false
-    - ansible_facts['os_family'] == 'Debian'
 
 - name: "Check for NNT HubDetails XML File"
   ansible.builtin.stat:
