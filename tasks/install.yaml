@@ -91,40 +91,50 @@
     cmd: "./{{ config_script }} {{ hub_url }} {{ agent_username }} {{ agent_password }}"
   args:
     chdir: "{{ nnt_install }}"
-
-- name: "Stop the Service Daemon"
-  ansible.builtin.service:
-    name: "{{ nnt_service }}"
-    state: stopped
   when:
-    - proxy | bool
+    - not proxy | bool
 
-- name: "Update NNT Config Script (Proxy Settings)"
-  ansible.builtin.replace:
-    path: "{{ nnt_config }}/HubDetails.xml"
-    regexp: "{{ item.regexp }}"
-    replace: "{{ item.replace }}"
-  with_items:
-    - regexp: '^.*false.*'
-      replace: '  <UseDefaultProxy>true</UseDefaultProxy>'
-    - regexp: '^.*<Proxy.\/>'
-      replace: '  <Proxy>{{ proxy_protocol }}://{{ proxy_host }}:{{ proxy_port }}</Proxy>'
-  when:
-    - proxy | bool
+#- name: "Stop the Service Daemon"
+#  ansible.builtin.service:
+#    name: "{{ nnt_service }}"
+#    state: stopped
+#  when:
+#    - proxy | bool
 
-- name: "Cleanup NNT configuration logs"
-  ansible.builtin.file:
-    path: "{{ nnt_config }}/{{ item }}"
-    state: absent
-  with_items:
-    - agent.id
-    - events.db
-    - MasterDevice.json
-    - ProxiedDevices.json
-    - rolling-log.txt
-    - store.db
-  when:
-    - proxy | bool
+#- name: "Update NNT Config Script (Proxy Settings)"
+#  ansible.builtin.replace:
+#    path: "{{ nnt_config }}/HubDetails.xml"
+#    regexp: "{{ item.regexp }}"
+#    replace: "{{ item.replace }}"
+#  with_items:
+#    - regexp: '^.*false.*'
+#      replace: '  <UseDefaultProxy>true</UseDefaultProxy>'
+#    - regexp: '^.*<Proxy.\/>'
+#      replace: '  <Proxy>{{ proxy_protocol }}://{{ proxy_host }}:{{ proxy_port }}</Proxy>'
+#  when:
+#    - proxy | bool
+
+#- name: "Cleanup NNT configuration logs"
+#  ansible.builtin.file:
+#    path: "{{ nnt_config }}/{{ item }}"
+#    state: absent
+#  with_items:
+#    - agent.id
+#    - events.db
+#    - MasterDevice.json
+#    - ProxiedDevices.json
+#    - rolling-log.txt
+#    - store.db
+#  when:
+#    - proxy | bool
+
+- name: "Deploy Tidal Agent init script (RHEL6)"
+  ansible.builtin.template:
+    src: HubDetails.j2
+    dest: "{{ nnt_config }}/HubDetails.xml"
+    owner: root
+    group: root
+    mode: '0640'
 
 - name: "Start the Service Daemon"
   ansible.builtin.service:
