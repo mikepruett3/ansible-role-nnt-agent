@@ -132,10 +132,10 @@
       {{ hub_url }} \
       {{ agent_username }} \
       {{ agent_password }} \
-      \
-      \
-      \
-      \
+
+
+
+
       {{ proxy_protocol }} \
       {{ proxy_host }}:{{ proxy_port }}
   #args:
