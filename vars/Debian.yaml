@@ -1,6 +1,7 @@
 ---
 # Debian vars file for ansible-role-nnt-agent
 
+nnt_service: "nntgen7agent"
 packages:
   - nnt-mono_5.2.0.224_amd64.deb
   - nnt-changetracker-gen7agent_7.0.1.8-115_all.deb

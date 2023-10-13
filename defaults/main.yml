@@ -15,5 +15,3 @@ agent_password: "password"
 software_url:   "http://www.example.org"
 package_name:   "nnt-changetracker-gen7agentcore-7.0.1.9-255.noarch.rpm"
 package_version: "7.0.1.9-255"
-
-nnt_service: "nntgen7agentcore"

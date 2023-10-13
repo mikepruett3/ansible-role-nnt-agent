@@ -1,2 +1,4 @@
 ---
 # RedHat vars file for ansible-role-nnt-agent
+
+nnt_service: "nntgen7agentcore"

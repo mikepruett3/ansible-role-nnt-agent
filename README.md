@@ -28,8 +28,6 @@ agent_password: "password"
 software_url: "http://www.example.org"
 package_name: "managesoft-17.3.0-1.x86_64.rpm"
 package_version: "17.3.0"
-
-nnt_service: "nntgen7agentcore"
 ```
 
 ```proxy``` **(Required)** Controls if the client install will be used with a HTTP/HTTPS Proxy Server. This should be either **True** or **False** (Default is **False**).
@@ -55,8 +53,6 @@ nnt_service: "nntgen7agentcore"
 ```package_name``` **(Required)** The Installer package name.
 
 ```package_version``` **(Required)** The version of the Installer package. Used in determination if Upgrading existing install.
-
-```nnt_service``` **(Required)** The (Base) name of the NNT Change Tracker Service.
 
 Role variables can be stored with the ```hosts.yaml``` file, or in the main variables file.
 
