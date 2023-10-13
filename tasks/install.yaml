@@ -108,24 +108,24 @@
   args:
     chdir: "{{ nnt_install }}"
 
-#- name: "Stop the Service Daemon"
-#  ansible.builtin.service:
-#    name: "{{ nnt_service }}"
-#    state: restarted
-#  when:
-#    - proxy | bool
+- name: "Stop the Service Daemon"
+  ansible.builtin.service:
+    name: "{{ nnt_service }}"
+    state: restarted
+  when:
+    - proxy | bool
 
-#- name: "Update NNT Config Script (Proxy Settings)"
-#  ansible.builtin.replace:
-#    path: "{{ nnt_config }}/HubDetails.xml"
-#    regexp: "{{ item.regexp }}"
-#    replace: "{{ item.replace }}"
-#  with_items:
-#    - regexp: '^..D_USE_PROXY=no'
-#      replace: '  D_USE_PROXY={{ use_proxy }}'
-#    - regexp: '^..D_PROXY_PROTOCOL='
-#      replace: '  D_PROXY_PROTOCOL={{ proxy_protocol }}'
-#    - regexp: '^..D_PROXY_SERVER='
-#      replace: '  D_PROXY_SERVER={{ proxy_host }}'
-#  when:
-#    - proxy | bool
+- name: "Update NNT Config Script (Proxy Settings)"
+  ansible.builtin.replace:
+    path: "{{ nnt_config }}/HubDetails.xml"
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+  with_items:
+    - regexp: '^..<UseDefaultProxy>false'
+      replace: '  <UseDefaultProxy>{{ use_proxy }}'
+    #- regexp: '^..D_PROXY_PROTOCOL='
+    #  replace: '  D_PROXY_PROTOCOL={{ proxy_protocol }}'
+    #- regexp: '^..D_PROXY_SERVER='
+    #  replace: '  D_PROXY_SERVER={{ proxy_host }}'
+  when:
+    - proxy | bool
