@@ -128,13 +128,22 @@
 #  when:
 #    - proxy | bool
 
-- name: "Deploy Tidal Agent init script (RHEL6)"
+- name: "Create the NNT Configuration directory"
+  ansible.builtin.file:
+    path: "{{ nnt_config }}"
+    state: directory
+  when:
+    - proxy | bool
+
+- name: "Deploy HubDetails.xml configuration file"
   ansible.builtin.template:
     src: HubDetails.j2
     dest: "{{ nnt_config }}/HubDetails.xml"
     owner: root
     group: root
     mode: '0640'
+  when:
+    - proxy | bool
 
 - name: "Start the Service Daemon"
   ansible.builtin.service:
