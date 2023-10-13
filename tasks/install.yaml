@@ -111,7 +111,7 @@
 - name: "Stop the Service Daemon"
   ansible.builtin.service:
     name: "{{ nnt_service }}"
-    state: restarted
+    state: stopped
   when:
     - proxy | bool
 
@@ -123,9 +123,28 @@
   with_items:
     - regexp: '^..<UseDefaultProxy>false'
       replace: '  <UseDefaultProxy>{{ use_proxy }}'
-    #- regexp: '^..D_PROXY_PROTOCOL='
-    #  replace: '  D_PROXY_PROTOCOL={{ proxy_protocol }}'
-    #- regexp: '^..D_PROXY_SERVER='
-    #  replace: '  D_PROXY_SERVER={{ proxy_host }}'
+    - regexp: '^..<Proxy />'
+      replace: '  <Proxy>{{ proxy_protocol }}://{{ proxy_host }}:{{ proxy_port }}</Proxy>'
+  when:
+    - proxy | bool
+
+- name: "Cleanup NNT configuration logs"
+  ansible.builtin.file:
+    path: "{{ nnt_config }}/{{ item }}"
+    state: absent
+  with_items:
+    - agent.id
+    - events.db
+    - MasterDevice.json
+    - ProxiedDevices.json
+    - rolling-log.txt
+    - store.db
+  when:
+    - proxy | bool
+
+- name: "Start the Service Daemon"
+  ansible.builtin.service:
+    name: "{{ nnt_service }}"
+    state: started
   when:
     - proxy | bool
