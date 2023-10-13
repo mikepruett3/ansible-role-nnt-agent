@@ -15,93 +15,90 @@
     - result.stat.isdir
     - result.failed is false
 
-- name: "Check for NNT install directory"
+- name: "Check for NNT install directory (RedHat)"
   ansible.builtin.stat:
     path: /opt/nnt/gen7agentcore
   register: result
   ignore_errors: true
+  when:
+    - ansible_facts['os_family'] == 'RedHat'
 
-- name: "Set Facts for NNT install directory"
+- name: "Set Facts for NNT install directory (RedHat)"
   ansible.builtin.set_fact:
     nnt_install: /opt/nnt/gen7agentcore
   when:
     - result.stat.exists
     - result.stat.isdir
     - result.failed is false
+    - ansible_facts['os_family'] == 'RedHat'
 
-- name: "Set Facts for Install variable"
-  ansible.builtin.set_fact:
-    install: true
-  #when:
-  #  - nnt_install is not defined
-
-- name: "Check for NNT config directory"
+- name: "Check for NNT install directory (Debian)"
   ansible.builtin.stat:
-    path: /var/nnt/gen7agent.app.netcore
+    path: /opt/nnt/gen7agent
   register: result
   ignore_errors: true
+  when:
+    - ansible_facts['os_family'] == 'Debian'
 
-- name: "Set Facts for NNT config directory"
+- name: "Set Facts for NNT install directory (Debian)"
   ansible.builtin.set_fact:
-    nnt_config_dir: /var/nnt/gen7agent.app.netcore
+    nnt_install: /opt/nnt/gen7agent
   when:
     - result.stat.exists
     - result.stat.isdir
     - result.failed is false
+    - ansible_facts['os_family'] == 'Debian'
 
-#- name: "Collect fingerprint of the Managesoft Certificate"
-#  ansible.builtin.shell:
-#    cmd: openssl x509 -noout -fingerprint -sha256 -inform pem -in '{{ managesoft_config_dir }}/etc/ssl/cert.pem'
-#  register: result
-#  when:
-#    - managesoft_home is defined
+- name: "Set Facts for Install variable"
+  ansible.builtin.set_fact:
+    install: true
+  when:
+    - nnt_install is not defined
 
-#- name: "Set Facts for Managesoft Certificate fingerprint"
-#  ansible.builtin.set_fact:
-#    certificate: "{{ result.stdout | split('=') | last }}"
-#  when:
-#    - result.failed is false
+- name: "Check for NNT config directory (RedHat)"
+  ansible.builtin.stat:
+    path: /var/nnt/gen7agent.app.netcore
+  register: result
+  ignore_errors: true
+  when:
+    - ansible_facts['os_family'] == 'RedHat'
 
-#- name: "Download Flexera Certificate file to /tmp"
-#  ansible.builtin.get_url:
-#    url: "{{ software_url }}/{{ cert_file }}"
-#    dest: "/tmp/"
-#    validate_certs: no
-#    mode: '0774'
-#  when:
-#    - managesoft_home is defined
+- name: "Set Facts for NNT config directory (RedHat)"
+  ansible.builtin.set_fact:
+    nnt_config: /var/nnt/gen7agent.app.netcore
+  when:
+    - result.stat.exists
+    - result.stat.isdir
+    - result.failed is false
+    - ansible_facts['os_family'] == 'RedHat'
 
-#- name: "Collect fingerprint of the latest Managesoft Certificate"
-#  ansible.builtin.shell:
-#    cmd: openssl x509 -noout -fingerprint -sha256 -inform pem -in '/tmp/{{ cert_file }}'
-#  register: result
-#  when:
-#    - managesoft_home is defined
+- name: "Check for NNT config directory (Debian)"
+  ansible.builtin.stat:
+    path: /var/nnt/gen7agent.service
+  register: result
+  ignore_errors: true
+  when:
+    - ansible_facts['os_family'] == 'Debian'
 
-#- name: "Set Facts for latest Managesoft Certificate fingerprint"
-#  ansible.builtin.set_fact:
-#    certificate_latest: "{{ result.stdout | split('=') | last }}"
-#  when:
-#    - result.failed is false
-
-#- name: "Set Facts for Cert_Replace variable"
-#  ansible.builtin.set_fact:
-#    cert_replace: true
-#  when:
-#    - certificate is defined
-#    - certificate_latest is defined
-#    - certificate != certificate_latest
+- name: "Set Facts for NNT config directory (Debian)"
+  ansible.builtin.set_fact:
+    nnt_config: /var/nnt/gen7agent.service
+  when:
+    - result.stat.exists
+    - result.stat.isdir
+    - result.failed is false
+    - ansible_facts['os_family'] == 'Debian'
 
 - name: "Check for NNT HubDetails XML File"
   ansible.builtin.stat:
-    path: "{{ nnt_config_dir }}/HubDetails.xml"
+    path: "{{ nnt_config }}/HubDetails.xml"
   register: result
   when:
     - nnt_config_dir is defined
 
 - name: "Set Facts for NNT HubDetails XML File"
   ansible.builtin.set_fact:
-    hubdetails_file: "{{ nnt_config_dir }}/HubDetails.xml"
+    hubdetails: "{{ nnt_config }}/HubDetails.xml"
   when:
     - nnt_config_dir is defined
     - result.stat.exists
@@ -109,14 +106,14 @@
 
 - name: "Check for NNT Version TXT File"
   ansible.builtin.stat:
-    path: "{{ nnt_config_dir }}/version.txt"
+    path: "{{ nnt_config }}/version.txt"
   register: result
   when:
     - nnt_config_dir is defined
 
 - name: "Set Facts for NNT Version TXT File"
   ansible.builtin.set_fact:
-    version_file: "{{ nnt_config_dir }}/version.txt"
+    version: "{{ nnt_config }}/version.txt"
   when:
     - nnt_config_dir is defined
     - result.stat.exists
@@ -124,10 +121,10 @@
 
 - name: "Read from NNT Version TXT File"
   ansible.builtin.shell:
-    cmd: "cat {{ version_file }}"
+    cmd: "cat {{ version }}"
   register: result
   when:
-    - version_file is defined
+    - version is defined
 
 - name: "Set Facts for NNT Change Tracker Agent Installed Version"
   ansible.builtin.set_fact:
