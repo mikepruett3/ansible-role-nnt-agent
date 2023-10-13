@@ -138,7 +138,7 @@
       \
       {{ proxy_protocol }} \
       {{ proxy_host }}:{{ proxy_port }}
-  args:
+  #args:
     #chdir: "{{ nnt_install }}"
     #executable: "./{{ config_script }}"
     #stdin_add_newline: false
