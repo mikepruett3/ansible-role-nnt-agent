@@ -105,9 +105,9 @@
     regexp: "{{ item.regexp }}"
     replace: "{{ item.replace }}"
   with_items:
-    - regexp: '^..<UseDefaultProxy>false'
-      replace: '  <UseDefaultProxy>true'
-    - regexp: '^..<Proxy />'
+    - regexp: '^..<UseDefaultProxy>false<\/UseDefaultProxy>'
+      replace: '  <UseDefaultProxy>true</UseDefaultProxy>'
+    - regexp: '^..<Proxy \/>'
       replace: '  <Proxy>{{ proxy_protocol }}://{{ proxy_host }}:{{ proxy_port }}</Proxy>'
   when:
     - proxy | bool
