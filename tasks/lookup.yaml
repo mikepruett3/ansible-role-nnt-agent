@@ -32,8 +32,8 @@
 - name: "Set Facts for Install variable"
   ansible.builtin.set_fact:
     install: true
-  when:
-    - nnt_install is not defined
+  #when:
+  #  - nnt_install is not defined
 
 - name: "Check for NNT config directory"
   ansible.builtin.stat:
