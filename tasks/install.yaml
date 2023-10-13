@@ -86,9 +86,38 @@
 #    - proxy | bool
 #    - ansible_facts['os_family'] == 'RedHat'
 
-#- name: "Update NNT Config Script (Proxy Settings - Debian)"
+- name: "Set Facts for NNT configuration (RedHat)"
+  ansible.builtin.set_fact:
+    nnt_install: /opt/nnt/gen7agentcore
+    nnt_config: /var/nnt/gen7agent.app.netcore
+    config_script: configure-gen7agentcore.sh
+  when:
+    - ansible_facts['os_family'] == 'RedHat'
+
+- name: "Set Facts for NNT configuration (Debian)"
+  ansible.builtin.set_fact:
+    nnt_install: /opt/nnt/gen7agent
+    nnt_config: /var/nnt/gen7agent.service
+    config_script: configure-gen7agent.sh
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+
+- name: "Register Agent with Hub Host"
+  ansible.builtin.shell:
+    cmd: "./{{ config_script }} {{ hub_url }} {{ agent_username }} {{ agent_password }}"
+  args:
+    chdir: "{{ nnt_install }}"
+
+#- name: "Stop the Service Daemon"
+#  ansible.builtin.service:
+#    name: "{{ nnt_service }}"
+#    state: restarted
+#  when:
+#    - proxy | bool
+
+#- name: "Update NNT Config Script (Proxy Settings)"
 #  ansible.builtin.replace:
-#    path: "/opt/nnt/gen7agent/configure-gen7agent.sh"
+#    path: "{{ nnt_config }}/HubDetails.xml"
 #    regexp: "{{ item.regexp }}"
 #    replace: "{{ item.replace }}"
 #  with_items:
@@ -100,61 +129,3 @@
 #      replace: '  D_PROXY_SERVER={{ proxy_host }}'
 #  when:
 #    - proxy | bool
-#    - ansible_facts['os_family'] == 'Debian'
-
-- name: "Set Facts for NNT configuration (RedHat)"
-  ansible.builtin.set_fact:
-    nnt_install: /opt/nnt/gen7agentcore
-    nnt_bin: /opt/nnt/gen7agentcore/bin
-    config_script: configure-gen7agentcore.sh
-  when:
-    - ansible_facts['os_family'] == 'RedHat'
-
-- name: "Set Facts for NNT configuration (Debian)"
-  ansible.builtin.set_fact:
-    nnt_install: /opt/nnt/gen7agent
-    nnt_bin: /opt/nnt/gen7agent/bin
-    config_script: /opt/nnt/gen7agent/configure-gen7agent.sh
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-
-- name: "Register Agent with Hub Host (RedHat)"
-  ansible.builtin.shell:
-    cmd: "{{ config_script }} -D_HUB_HOST={{ hub_url }} -D_AGENT_USER={{ agent_username }} -D_AGENT_PWD={{ agent_password }}"
-  when:
-    - ansible_facts['os_family'] == 'RedHat'
-    - not proxy | bool
-
-- name: "Register Agent with Hub Host (RedHat - Proxy)"
-  ansible.builtin.shell:
-    cmd: |
-      {{ hub_url }} \
-      {{ agent_username }} \
-      {{ agent_password }} \
-       \
-       \
-       \
-       \
-      {{ proxy_protocol }} \
-      {{ proxy_host }}:{{ proxy_port }}
-  args:
-    chdir: "{{ nnt_install }}"
-    executable: "./{{ config_script }}"
-    stdin_add_newline: false
-  when:
-    - ansible_facts['os_family'] == 'RedHat'
-    - proxy | bool
-
-- name: "Register Agent with Hub Host (Debian)"
-  ansible.builtin.shell:
-    cmd: "/opt/nnt/gen7agent/configure-gen7agent.sh {{ hub_url }} {{ agent_username }} {{ agent_password }}"
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - not proxy | bool
-
-- name: "Register Agent with Hub Host (Debian - Proxy)"
-  ansible.builtin.shell:
-    cmd: "/opt/nnt/gen7agent/configure-gen7agent.sh {{ hub_url }} {{ agent_username }} {{ agent_password }} /opt/nnt/gen7agent/bin    {{ use_proxy }} {{ proxy_protocol }} {{ proxy_host }}:{{ proxy_port }}"
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - proxy | bool
