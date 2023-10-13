@@ -120,14 +120,14 @@
 
 - name: "Register Agent with Hub Host (RedHat)"
   ansible.builtin.shell:
-    cmd: "{{ config_script }} D_HUB_HOST={{ hub_url }} D_AGENT_USER={{ agent_username }} D_AGENT_PWD={{ agent_password }}"
+    cmd: "{{ config_script }} -D_HUB_HOST={{ hub_url }} -D_AGENT_USER={{ agent_username }} -D_AGENT_PWD={{ agent_password }}"
   when:
     - ansible_facts['os_family'] == 'RedHat'
     - not proxy | bool
 
 - name: "Register Agent with Hub Host (RedHat - Proxy)"
   ansible.builtin.shell:
-    cmd: "{{ config_script }} D_HUB_HOST={{ hub_url }} D_AGENT_USER={{ agent_username }} D_AGENT_PWD={{ agent_password }} D_USE_PROXY={{ use_proxy }} D_PROXY_PROTOCOL={{ proxy_protocol }} D_PROXY_SERVER={{ proxy_host }}:{{ proxy_port }}"
+    cmd: "{{ config_script }} -D_HUB_HOST={{ hub_url }} -D_AGENT_USER={{ agent_username }} -D_AGENT_PWD={{ agent_password }} -D_USE_PROXY={{ use_proxy }} -D_PROXY_PROTOCOL={{ proxy_protocol }} -D_PROXY_SERVER={{ proxy_host }}:{{ proxy_port }}"
   when:
     - ansible_facts['os_family'] == 'RedHat'
     - proxy | bool
