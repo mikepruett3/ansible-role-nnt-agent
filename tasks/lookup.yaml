@@ -94,13 +94,13 @@
     path: "{{ nnt_config }}/HubDetails.xml"
   register: result
   when:
-    - nnt_config_dir is defined
+    - nnt_config is defined
 
 - name: "Set Facts for NNT HubDetails XML File"
   ansible.builtin.set_fact:
     hubdetails: "{{ nnt_config }}/HubDetails.xml"
   when:
-    - nnt_config_dir is defined
+    - nnt_config is defined
     - result.stat.exists
     - result.failed is false
 
@@ -109,13 +109,13 @@
     path: "{{ nnt_config }}/version.txt"
   register: result
   when:
-    - nnt_config_dir is defined
+    - nnt_config is defined
 
 - name: "Set Facts for NNT Version TXT File"
   ansible.builtin.set_fact:
     version: "{{ nnt_config }}/version.txt"
   when:
-    - nnt_config_dir is defined
+    - nnt_config is defined
     - result.stat.exists
     - result.failed is false
 
