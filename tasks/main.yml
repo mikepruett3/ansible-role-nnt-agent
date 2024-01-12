@@ -42,8 +42,8 @@
     - install is defined
     - install | bool
 
-#- name: "Include tasks from upgrade playbook"
-#  ansible.builtin.include_tasks: upgrade.yaml
-#  when:
-#    - upgrade is defined
-#    - upgrade | bool
+- name: "Include tasks from upgrade playbook"
+  ansible.builtin.include_tasks: upgrade.yaml
+  when:
+    - upgrade is defined
+    - upgrade | bool

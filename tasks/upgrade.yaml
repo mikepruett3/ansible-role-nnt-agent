@@ -1,0 +1,70 @@
+---
+# Upgrade tasks file for ansible-role-nnt-agent
+
+- name: "Test if tripwire_installed boolean variable is set correctly"
+  ansible.builtin.assert:
+    that:
+      - tripwire_installed is defined
+      - tripwire_installed is boolean
+      - not tripwire_installed | bool
+    quiet: yes
+  when:
+    - tripwire_installed is defined
+
+- name: "Test if upgrade boolean variable is set correctly"
+  ansible.builtin.assert:
+    that:
+      - upgrade is defined
+      - upgrade is boolean
+    quiet: yes
+
+- name: "Create software directory under root homedir, if it does not exist"
+  ansible.builtin.file:
+    path: "/root/software/nnt/"
+    state: directory
+
+- name: "Check if installer package already exist"
+  ansible.builtin.stat:
+    path: "/root/software/nnt/{{ package_name }}"
+  register: package
+
+- name: "Download installer package from local repository"
+  ansible.builtin.get_url:
+    url: "{{ software_url }}/{{ package_name }}"
+    dest: "/root/software/nnt/"
+    validate_certs: no
+    mode: '0770'
+  when:
+    - not package.stat.exists | bool
+
+- name: "Extract Debian packages from .ZIP file (apt)"
+  ansible.builtin.unarchive:
+    src: "/root/software/nnt/{{ package_name }}"
+    dest: "/root/software/nnt/"
+    remote_src: yes
+  when:
+    - ansible_facts['pkg_mgr'] == 'apt'
+
+- name: "Upgrade package (yum)"
+  ansible.builtin.yum:
+    name: "/root/software/nnt/{{ package_name }}"
+    state: present
+  when:
+    - ansible_facts['pkg_mgr'] == 'yum'
+
+- name: "Upgrade package (dnf)"
+  ansible.builtin.dnf:
+    name: "/root/software/nnt/{{ package_name }}"
+    state: present
+    disable_gpg_check: yes
+  when:
+    - ansible_facts['pkg_mgr'] == 'dnf'
+
+- name: "Upgrade package (apt)"
+  ansible.builtin.apt:
+    deb: "/root/software/nnt/{{ item }}"
+    state: present
+  with_items:
+    - "{{ packages }}"
+  when:
+    - ansible_facts['pkg_mgr'] == 'apt'

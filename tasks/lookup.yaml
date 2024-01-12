@@ -128,7 +128,8 @@
 
 - name: "Set Facts for NNT Change Tracker Agent Installed Version"
   ansible.builtin.set_fact:
-    installed_version: "{{ result.stdout }}"
+    installed_version: "{{ result.stdout | replace ('-','.') }}"
+    package_version: "{{ package_version | replace ('-','.') }}"
   when:
     - result is defined
     - result.failed is false
@@ -138,4 +139,4 @@
     upgrade: true
   when:
     - installed_version is defined
-    - installed_version != package_version
+    - package_version is ansible.builtin.version(installed_version, '>')
