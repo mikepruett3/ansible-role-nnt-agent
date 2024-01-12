@@ -6,12 +6,14 @@ galaxy_info:
   license: "license (MIT)"
   min_ansible_version: 2.9
   platforms:
-   - name: EL
-     versions:
-     - 7
-     - 8
-   - name: Debian
-   - name: Ubuntu
+  - name: EL
+    versions:
+    - 6
+    - 7
+    - 8
+    - 9
+  - name: Debian
+  - name: Ubuntu
   galaxy_tags:
     - nnt
     - monitoring
