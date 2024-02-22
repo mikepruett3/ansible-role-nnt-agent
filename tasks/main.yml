@@ -46,6 +46,9 @@
 
 - name: "Include tasks from crypto playbook"
   ansible.builtin.include_tasks: crypto.yaml
+  when:
+    - ansible_facts['os_family'] == 'RedHat'
+    - ansible_facts['distribution']['major_version'] >= '8'
 
 #- name: "Include tasks from assert playbook"
 #  ansible.builtin.include_tasks: assert.yaml
