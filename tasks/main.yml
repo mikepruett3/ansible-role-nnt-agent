@@ -44,26 +44,26 @@
     status_code: [404]
   when: not proxy | bool
 
+- name: "Include tasks from assert playbook"
+  ansible.builtin.include_tasks: assert.yaml
+
+- name: "Include tasks from lookup playbook"
+  ansible.builtin.include_tasks: lookup.yaml
+
 - name: "Include tasks from crypto playbook"
   ansible.builtin.include_tasks: crypto.yaml
   when:
     - ansible_facts['os_family'] == 'RedHat'
     - ansible_distribution_major_version >= "8"
 
-#- name: "Include tasks from assert playbook"
-#  ansible.builtin.include_tasks: assert.yaml
+- name: "Include tasks from install playbook"
+  ansible.builtin.include_tasks: install.yaml
+  when:
+    - install is defined
+    - install | bool
 
-#- name: "Include tasks from lookup playbook"
-#  ansible.builtin.include_tasks: lookup.yaml
-
-#- name: "Include tasks from install playbook"
-#  ansible.builtin.include_tasks: install.yaml
-#  when:
-#    - install is defined
-#    - install | bool
-
-#- name: "Include tasks from upgrade playbook"
-#  ansible.builtin.include_tasks: upgrade.yaml
-#  when:
-#    - upgrade is defined
-#    - upgrade | bool
+- name: "Include tasks from upgrade playbook"
+  ansible.builtin.include_tasks: upgrade.yaml
+  when:
+    - upgrade is defined
+    - upgrade | bool
