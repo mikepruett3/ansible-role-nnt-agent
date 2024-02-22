@@ -22,3 +22,14 @@
       sign = RSA-SHA1+
   when:
     - crypto is not search('GEN7AGENT')
+
+- name: "Apply new System-Wide Cryptographic Policies"
+  ansible.builtin.shell:
+    cmd: update-crypto-policies --set DEFAULT:GEN7AGENT
+  when:
+    - crypto is not search('GEN7AGENT')
+
+- name: "Reboot host after new System-Wide Cryptographic Policies have been applied"
+  ansible.builtin.reboot:
+  when:
+    - crypto is not search('GEN7AGENT')
