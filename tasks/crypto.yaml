@@ -1,0 +1,9 @@
+---
+# Crypto Policy tasks file for ansible-role-nnt-agent
+
+- name: "Check existing System-Wide Cryptographic Policies"
+  ansible.builtin.shell:
+    cmd: update-crypto-policies --show
+  register: crypto
+
+#- name:

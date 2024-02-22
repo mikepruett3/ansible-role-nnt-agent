@@ -44,6 +44,9 @@
     status_code: [404]
   when: not proxy | bool
 
+- name: "Include tasks from crypto playbook"
+  ansible.builtin.include_tasks: crypto.yaml
+
 #- name: "Include tasks from assert playbook"
 #  ansible.builtin.include_tasks: assert.yaml
 
