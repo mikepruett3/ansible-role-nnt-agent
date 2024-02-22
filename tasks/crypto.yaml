@@ -1,9 +1,24 @@
 ---
 # Crypto Policy tasks file for ansible-role-nnt-agent
 
-- name: "Check existing System-Wide Cryptographic Policies"
+- name: "Collect existing System-Wide Cryptographic Policies"
   ansible.builtin.shell:
     cmd: update-crypto-policies --show
   register: crypto
 
-#- name:
+- name: "Set fact for System-Wide Cryptographic Policy"
+  ansible.builtin.set_fact:
+    crypto: "{{ crypto.stdout }}"
+
+- name: "Add custom NNT GEN7AGENT System-Wide Cryptographic Policy (if missing)"
+  ansible.builtin.copy:
+    dest: /usr/share/crypto-policies/policies/modules/GEN7AGENT.pmod
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      # This subpolicy adds SHA1 hash and signature support
+      hash = SHA1+
+      sign = RSA-SHA1+
+  when:
+    - crypto is not search('GEN7AGENT')
