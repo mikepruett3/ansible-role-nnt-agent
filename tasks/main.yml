@@ -11,7 +11,11 @@
     method: GET
     validate_certs: no
     status_code: [200, 400]
-  when: proxy != False
+  when: proxy | bool
+
+- name: "Check for Hub Server Name Resolution"
+  ansible.builtin.set_fact:
+    resolve: "{{ hub_host is ansible.utils.resolvable }}"
 
 - name: "Add Hub Server IP and Hostname to the /etc/hosts for Name Resolution"
   ansible.builtin.lineinfile:
@@ -19,8 +23,9 @@
     line: "{{ hub_ip }}\t{{ hub_host }}"
     insertafter: EOF
     state: present
+  when: not resolve | bool
 
-- name: "Test Access to Hub Server"
+- name: "Test Access to Hub Server (Proxy)"
   ansible.builtin.uri:
     url: "{{ hub_url }}"
     method: GET
@@ -29,21 +34,30 @@
   environment:
     http_proxy: "{{ proxy_protocol }}://{{ proxy_host }}:{{ proxy_port }}"
     https_proxy: "{{ proxy_protocol }}://{{ proxy_host }}:{{ proxy_port }}"
+  when: proxy | bool
 
-- name: "Include tasks from assert playbook"
-  ansible.builtin.include_tasks: assert.yaml
+- name: "Test Access to Hub Server"
+  ansible.builtin.uri:
+    url: "{{ hub_url }}"
+    method: GET
+    validate_certs: no
+    status_code: [404]
+  when: not proxy | bool
 
-- name: "Include tasks from lookup playbook"
-  ansible.builtin.include_tasks: lookup.yaml
+#- name: "Include tasks from assert playbook"
+#  ansible.builtin.include_tasks: assert.yaml
 
-- name: "Include tasks from install playbook"
-  ansible.builtin.include_tasks: install.yaml
-  when:
-    - install is defined
-    - install | bool
+#- name: "Include tasks from lookup playbook"
+#  ansible.builtin.include_tasks: lookup.yaml
 
-- name: "Include tasks from upgrade playbook"
-  ansible.builtin.include_tasks: upgrade.yaml
-  when:
-    - upgrade is defined
-    - upgrade | bool
+#- name: "Include tasks from install playbook"
+#  ansible.builtin.include_tasks: install.yaml
+#  when:
+#    - install is defined
+#    - install | bool
+
+#- name: "Include tasks from upgrade playbook"
+#  ansible.builtin.include_tasks: upgrade.yaml
+#  when:
+#    - upgrade is defined
+#    - upgrade | bool
