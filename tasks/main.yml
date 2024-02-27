@@ -14,8 +14,15 @@
   when: proxy | bool
 
 - name: "Check for Hub Server Name Resolution"
+  ansible.builtin.shell:
+    cmd: nslookup "{{ hub_host }}"
+  register: resolve
+
+- name: "Set resolve fact"
   ansible.builtin.set_fact:
-    resolve: "{{ hub_host is ansible.utils.resolvable }}"
+    resolve: true
+  when:
+    - resolve.rc == 0
 
 - name: "Add Hub Server IP and Hostname to the /etc/hosts for Name Resolution"
   ansible.builtin.lineinfile:
