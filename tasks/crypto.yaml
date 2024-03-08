@@ -25,7 +25,7 @@
 
 - name: "Apply new System-Wide Cryptographic Policies"
   ansible.builtin.shell:
-    cmd: update-crypto-policies --set DEFAULT:GEN7AGENT
+    cmd: update-crypto-policies --set {{ crypto }}:GEN7AGENT
   when:
     - crypto is not search('GEN7AGENT')
 
