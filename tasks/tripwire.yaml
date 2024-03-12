@@ -3,8 +3,12 @@
 
 - name: "Stop Tripwire Service"
   ansible.builtin.service:
-    name: tripwire
+    name: "{{ services }}"
     state: stopped
+  vars:
+    packages:
+    - tw-eg-service
+    - tripwire-axon-agent
 
 - name: "Uninstall Tripwire (yum)"
   ansible.builtin.yum:
