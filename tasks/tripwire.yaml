@@ -18,6 +18,7 @@
     packages:
     - tw-eg-service
     - tw-eg-driver-rhel
+    - axon-agent
   ignore_errors: true
   when:
     - ansible_facts['pkg_mgr'] == 'yum'
@@ -30,6 +31,7 @@
     packages:
     - tw-eg-service
     - tw-eg-driver-rhel
+    - axon-agent
   ignore_errors: true
   when:
     - ansible_facts['pkg_mgr'] == 'dnf'
@@ -50,7 +52,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     recurse: true
-    state: absent
+    state: directory
   with_items:
     - /etc/tripwire
     - /opt/tripwire
