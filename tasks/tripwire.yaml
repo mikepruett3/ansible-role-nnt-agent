@@ -5,7 +5,7 @@
   ansible.builtin.service:
     name: "{{ item }}"
     state: stopped
-  where_item:
+  with_items:
     - tw-eg-service
     - tripwire-axon-agent
 
