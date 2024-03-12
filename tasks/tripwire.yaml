@@ -44,10 +44,10 @@
 
 - name: "Cleanup left-over directories"
   ansible.builtin.file:
-    path: "{{ paths }}"
+    path: "{{ item }}"
+    recurse: true
     state: absent
-  vars:
-    paths:
+  with_items:
     - /etc/tripwire
     - /opt/tripwire
     - /var/cache/tripwire
