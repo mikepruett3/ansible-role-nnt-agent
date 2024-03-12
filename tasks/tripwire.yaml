@@ -1,0 +1,53 @@
+---
+# tasks file for ansible-role-nnt-agent
+
+- name: "Stop Tripwire Service"
+  ansible.builtin.service:
+    name: tripwire
+    state: stopped
+
+- name: "Uninstall Tripwire (yum)"
+  ansible.builtin.yum:
+    name: "{{ packages }}"
+    state: absent
+  vars:
+    packages:
+    - tw-eg-service
+    - tw-eg-driver-rhel
+  when:
+    - ansible_facts['pkg_mgr'] == 'yum'
+
+- name: "Uninstall Tripwire (dnf)"
+  ansible.builtin.dnf:
+    name: "{{ packages }}"
+    state: absent
+  vars:
+    packages:
+    - tw-eg-service
+    - tw-eg-driver-rhel
+  when:
+    - ansible_facts['pkg_mgr'] == 'dnf'
+
+- name: "Uninstall Tripwire (apt)"
+  ansible.builtin.apt:
+    name: "{{ packages }}"
+    state: absent
+  vars:
+    packages:
+    - tw-eg-service
+    - tw-eg-driver-rhel
+  when:
+    - ansible_facts['pkg_mgr'] == 'apt'
+
+- name: "Cleanup left-over directories"
+  ansible.builtin.file:
+    path: "{{ paths }}"
+    state: absent
+  vars:
+    packages:
+    - /etc/tripwire
+    - /opt/tripwire
+    - /var/cache/tripwire
+    - /var/lock/tripwire
+    - /var/log/tripwire
+    - /var/spool/tripwire
