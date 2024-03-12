@@ -3,10 +3,9 @@
 
 - name: "Stop Tripwire Service"
   ansible.builtin.service:
-    name: "{{ services }}"
+    name: "{{ item }}"
     state: stopped
-  vars:
-    services:
+  where_item:
     - tw-eg-service
     - tripwire-axon-agent
 
