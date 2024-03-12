@@ -6,7 +6,7 @@
     name: "{{ services }}"
     state: stopped
   vars:
-    packages:
+    services:
     - tw-eg-service
     - tripwire-axon-agent
 
@@ -48,7 +48,7 @@
     path: "{{ paths }}"
     state: absent
   vars:
-    packages:
+    paths:
     - /etc/tripwire
     - /opt/tripwire
     - /var/cache/tripwire
